@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#F7F3FF" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="온빛 청년부" />
+  <title>온빛 청년부 · ON:BIT YOUTH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-ivory: #FFFDF9;
+      --bg-lavender: #F4EEFF;
+      --accent-lavender: #9D7FEA;
+      --accent-pink: #FF8FB1;
+      --accent-mint: #4ECDC4;
+      --accent-sky: #6BCBFF;
+      --text-main: #3D354B;
+      --text-sub: #7C738E;
+      --card-bg: #FFFFFF;
+      --border-soft: #ECE4FA;
+      --shadow-soft: 0 8px 24px rgba(138, 110, 209, 0.08);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0; padding: 0;
+      background: linear-gradient(180deg, #F6F0FF 0%, #FFFDF9 35%, #FFF7FA 100%);
+      color: var(--text-main);
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      padding-bottom: env(safe-area-inset-bottom, 24px);
+    }
+    .handwriting { font-family: 'Gaegu', cursive; }
+    .app-shell { max-width: 520px; margin: 0 auto; padding: 16px 16px 40px; }
+    .topbar {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1.5px solid var(--border-soft);
+      border-radius: 22px; padding: 12px 14px;
+      box-shadow: var(--shadow-soft); margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    }
+    .topbar-left, .topbar-right { display: flex; align-items: center; gap: 6px; }
+    .sync-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 10px; border-radius: 999px;
+      background: #EEFBF8; color: #1D7A74; font-size: 11px; font-weight: 600; cursor: pointer;
+    }
+    .sync-pill.offline { background: #FFF3F6; color: #B84268; }
+    .home-hero { text-align: center; padding: 22px 12px 26px; }
+    .home-logo {
+      font-size: 56px; font-weight: 700; line-height: 1; margin: 0;
+      background: linear-gradient(135deg, #FF7EA5 0%, #9D7FEA 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px;
+    }
+    .home-subtitle { margin-top: 8px; font-size: 14px; font-weight: 600; color: var(--text-sub); }
+    .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 6px; }
+    .menu-tile {
+      background: #FFFFFF; border: 2px solid var(--border-soft); border-radius: 26px;
+      padding: 26px 16px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 10px; box-shadow: var(--shadow-soft); cursor: pointer; min-height: 154px;
+    }
+    .menu-tile.tile-attendance { background: linear-gradient(160deg, #FFFFFF 40%, #F2ECFF 100%); border-color: #E3D6FF; }
+    .menu-tile.tile-birthday { background: linear-gradient(160deg, #FFFFFF 40%, #FFEFF4 100%); border-color: #FFD6E4; }
+    .menu-tile.tile-journal { background: linear-gradient(160deg, #FFFFFF 40%, #EAFBF8 100%); border-color: #C9F2EC; }
+    .menu-tile.tile-bulletin { background: linear-gradient(160deg, #FFFFFF 40%, #EEF7FF 100%); border-color: #D2E9FF; }
+    .tile-icon { font-size: 38px; line-height: 1; }
+    .tile-title { font-size: 18px; font-weight: 700; color: var(--text-main); }
+    .tile-desc { font-size: 12px; color: var(--text-sub); text-align: center; }
+    .sub-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 4px 2px; }
+    .sub-title { margin: 0; font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .btn { border: none; border-radius: 14px; padding: 9px 13px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 12px; }
+    .btn-primary { background: linear-gradient(135deg, #A486F5, #FF9BB8); color: #FFFFFF; }
+    .btn-soft { background: var(--bg-lavender); color: var(--text-main); }
+    .btn-mint { background: #E3F9F6; color: #1A7670; }
+    .btn-pink { background: #FFE7EF; color: #B63D65; }
+    .card {
+      background: var(--card-bg); border: 1.5px solid var(--border-soft);
+      border-radius: 22px; padding: 16px; box-shadow: var(--shadow-soft); margin-bottom: 14px;
+    }
+    .card-title { margin: 0 0 12px; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .stat-box { background: #FAF7FF; border: 1px solid #EDE5FC; border-radius: 16px; padding: 12px; }
+    .stat-label { font-size: 12px; color: var(--text-sub); }
+    .stat-value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+    .member-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 12px; border-radius: 16px; background: #FCF9FF;
+      border: 1px solid #EFE9FC; margin-bottom: 8px; gap: 8px;
+    }
+    .member-name { font-weight: 700; font-size: 14px; }
+    .member-meta { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+    .chip-group { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .edit-panel {
+      margin-top: 10px; padding: 12px; border-radius: 14px;
+      background: #FAF7FF; border: 1px solid #E5DCF6;
+    }
+    .field-label { display: block; font-size: 12px; font-weight: 700; color: var(--text-sub); margin: 0 0 5px 2px; }
+    .input, .textarea, .select {
+      width: 100%; border: 1.5px solid #E5DCF6; border-radius: 14px;
+      padding: 10px 12px; font-size: 14px; font-family: inherit;
+      background: #FFFFFF; color: var(--text-main); margin-bottom: 10px;
+    }
+    .textarea { min-height: 82px; resize: vertical; }
+    .log-entry { padding: 14px; border-radius: 18px; background: #FFFDFB; border: 1.5px solid #F2E8FA; margin-bottom: 12px; }
+    .journal-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 10px;
+      background: #FAF6FF; border-radius: 12px; padding: 10px; margin: 8px 0; font-size: 13px;
+    }
+    .journal-item-full { grid-column: 1 / -1; }
+    .journal-tag { font-weight: 700; color: var(--accent-lavender); margin-right: 4px; }
+    .bulletin-img {
+      width: 100%; max-height: 360px; object-fit: cover; border-radius: 14px;
+      margin-top: 10px; border: 1px solid var(--border-soft); cursor: zoom-in; display: block;
+    }
+    .preview-box { margin-bottom: 10px; text-align: center; }
+    .preview-box img { max-width: 100%; max-height: 180px; border-radius: 12px; border: 1px solid var(--border-soft); }
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(45, 35, 66, 0.48);
+      display: none; align-items: center; justify-content: center; padding: 16px; z-index: 60;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal-box {
+      width: 100%; max-width: 420px; max-height: 85vh; overflow-y: auto;
+      background: #FFFFFF; border-radius: 24px; padding: 20px;
+    }
+    .empty-note { text-align: center; color: var(--text-sub); font-size: 13px; padding: 18px 8px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="homeBtn" class="btn btn-soft btn-sm" style="display:none;" onclick="goHome()">← 홈으로</button>
+        <span id="syncStatus" class="sync-pill" onclick="syncNow()">☁️ 동기화 확인중</span>
+      </div>
+      <div class="topbar-right">
+        <button id="leaderBtn" class="btn btn-soft btn-sm" onclick="handleLeaderClick()">임원 로그인</button>
+        <button class="btn btn-soft btn-sm" onclick="openSettingsModal()">⚙️</button>
+      </div>
+    </header>
+    <main id="viewContainer"></main>
+  </div>
+
+  <div id="pinModal" class="modal-backdrop">
+    <div class="modal-box">
+      <h3 style="margin:0 0 6px;">임원 PIN 인증</h3>
+      <p style="margin:0 0 12px;font-size:13px;color:var(--text-sub);">임원 전용 수정·등록을 위해 PIN을 입력하세요. (기본 PIN: 1004)</p>
+      <input id="pinInput" class="input" type="password" inputmode="numeric" maxlength="6" placeholder="PIN 4자리 입력" />
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button class="btn btn-soft" onclick="closePinModal()">취소</button>
+        <button class="btn btn-primary" onclick="verifyPin()">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <h3 style="margin:0;">⚙️ 설정 및 임원 로그</h3>
+        <button class="btn btn-soft btn-sm" onclick="closeSettingsModal()">닫기</button>
+      </div>
+      <div style="background:#FAF7FF;border:1px solid #EDE5FC;border-radius:16px;padding:12px;margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px;">클라우드 동기화</div>
+        <button class="btn btn-mint btn-sm" style="width:100%;" onclick="syncNow()">🔄 지금 클라우드 동기화</button>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px;">📋 최근 임원 활동 로그</div>
+        <div id="settingsLogList" style="max-height:220px;overflow-y:auto;background:#FCF9FF;border:1px solid #EFE9FC;border-radius:14px;padding:10px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="imageModal" class="modal-backdrop" onclick="closeImageModal()">
+    <div class="modal-box" style="padding:12px;max-width:480px;" onclick="event.stopPropagation()">
+      <img id="modalFullImage" src="" alt="주보 크게 보기" style="width:100%;border-radius:16px;display:block;" />
+      <button class="btn btn-soft" style="width:100%;margin-top:10px;" onclick="closeImageModal()">닫기</button>
+    </div>
+  </div>
+
+  <script>
+    var SUPABASE_URL = 'https://vonuqsudjdwmglqusjs.supabase.co';
+    var SUPABASE_ANON_KEY = 'sb_publishable_HhncxkJiThXN9C1SQEOjVg_d8iCU4_R';
+    var STATE_ROW_ID = 'onbit_youth_main_v1';
+    var LOCAL_KEY = 'onbit_youth_local_state_v1';
+
+    var DEFAULT_STATE = {
+      leaderPin: '1004',
+      members: [
+        { id: 'm1', name: '김하늘', group: '1순', birthday: '11-28', attendance: 'present' },
+        { id: 'm2', name: '이소망', group: '1순', birthday: '11-15', attendance: 'present' },
+        { id: 'm3', name: '박은혜', group: '2순', birthday: '12-04', attendance: 'absent' },
+        { id: 'm4', name: '최온유', group: '2순', birthday: '03-19', attendance: 'present' }
+      ],
+      journals: [
+        {
+          id: 'j1', date: '2026-11-22', title: '주일 청년부 예배',
+          leader: '김하늘', prayer: '이소망',
+          praise: '주님의 은혜 넘치네, 예수 늘 함께하시네',
+          scripture: '요한복음 8:12', sermonTitle: '세상의 빛으로 살아가는 청년',
+          note: '함께 모여 찬양하고 기도한 따뜻한 시간. 새 가족 환대 준비하기.'
+        }
+      ],
+      bulletins: [
+        {
+          id: 'b1', date: '2026-11-22', title: '11월 넷째 주 온빛 주보',
+          summary: '청년부 헌신예배 안내 및 12월 생일파티 공지', imageData: ''
+        }
+      ],
+      activityLogs: ['앱 초기 데이터 준비 완료']
+    };
+
+    function cloneDefault() {
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+
+    var state = loadLocalState();
+    var isLeader = false;
+    var currentView = 'home';
+    var selectedMonth = String(new Date().getMonth() + 1);
+    if (selectedMonth.length < 2) selectedMonth = '0' + selectedMonth;
+    var pendingBulletinImage = '';
+    var editingMemberId = null;
+    var editingJournalId = null;
+    var editingBulletinId = null;
+
+    function loadLocalState() {
+      try {
+        var raw = localStorage.getItem(LOCAL_KEY);
+        if (!raw) return cloneDefault();
+        var parsed = JSON.parse(raw);
+        var base = cloneDefault();
+        return {
+          leaderPin: parsed.leaderPin || base.leaderPin,
+          members: Array.isArray(parsed.members) ? parsed.members : base.members,
+          journals: Array.isArray(parsed.journals) ? parsed.journals : base.journals,
+          bulletins: Array.isArray(parsed.bulletins) ? parsed.bulletins : base.bulletins,
+          activityLogs: Array.isArray(parsed.activityLogs) ? parsed.activityLogs : base.activityLogs
+        };
+      } catch (e) {
+        return cloneDefault();
+      }
+    }
+
+    function saveLocalState() {
+      try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    function setSyncStatus(text, isOffline) {
+      var el = document.getElementById('syncStatus');
+      if (!el) return;
+      el.textContent = text;
+      el.className = isOffline ? 'sync-pill offline' : 'sync-pill';
+    }
+
+    function pullFromCloud() {
+      fetch(SUPABASE_URL + '/rest/v1/onbit_state?id=eq.' + encodeURIComponent(STATE_ROW_ID) + '&select=data', {
+        headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY }
+      })
+      .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(function(rows) {
+        if (Array.isArray(rows) && rows.length > 0 && rows[0].data) {
+          var d = rows[0].data;
+          var base = cloneDefault();
+          state = {
+            leaderPin: d.leaderPin || base.leaderPin,
+            members: Array.isArray(d.members) ? d.members : base.members,
+            journals: Array.isArray(d.journals) ? d.journals : base.journals,
+            bulletins: Array.isArray(d.bulletins) ? d.bulletins : base.bulletins,
+            activityLogs: Array.isArray(d.activityLogs) ? d.activityLogs : base.activityLogs
+          };
+          saveLocalState();
+          setSyncStatus('☁️ 동기화 완료', false);
+          render();
+        } else {
+          pushToCloud(false);
+        }
+      })
+      .catch(function() { setSyncStatus('📱 로컬 모드', true); });
+    }
+
+    function pushToCloud(showAlert) {
+      saveLocalState();
+      return fetch(SUPABASE_URL + '/rest/v1/onbit_state?on_conflict=id', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: 'Bearer ' + SUPABASE_ANON_KEY,
+          Prefer: 'resolution=merge-duplicates,return=minimal'
+        },
+        body: JSON.stringify([{ id: STATE_ROW_ID, data: state, updated_at: new Date().toISOString() }])
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        setSyncStatus('☁️ 저장 완료', false);
+        if (showAlert) alert('클라우드에 저장되었습니다!');
+      })
+      .catch(function() {
+        setSyncStatus('📱 기기 저장됨', true);
+        if (showAlert) alert('현재 기기에 저장되었습니다.');
+      });
+    }
+
+    function syncNow() { setSyncStatus('🔄 동기화 중...', false); pullFromCloud(); }
+
+    function addLog(msg) {
+      var now = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+      var list = ['[' + now + '] ' + msg].concat(state.activityLogs || []);
+      state.activityLogs = list.slice(0, 20);
+    }
+
+    function requireLeader(actionFn) { if (isLeader) actionFn(); else openPinModal(); }
+    function handleLeaderClick() { isLeader = !isLeader; updateLeaderButton(); render(); }
+    function openPinModal() { document.getElementById('pinInput').value = ''; document.getElementById('pinModal').classList.add('show'); }
+    function closePinModal() { document.getElementById('pinModal').classList.remove('show'); }
+    function verifyPin() {
+      var val = document.getElementById('pinInput').value.trim();
+      if (val === state.leaderPin) { isLeader = true; closePinModal(); updateLeaderButton(); render(); }
+      else { alert('PIN 번호가 일치하지 않습니다. (기본 PIN: 1004)'); }
+    }
+    function updateLeaderButton() {
+      var btn = document.getElementById('leaderBtn');
+      btn.textContent = isLeader ? '임원 모드 ON' : '임원 로그인';
+      btn.className = isLeader ? 'btn btn-primary btn-sm' : 'btn btn-soft btn-sm';
+    }
+    function openSettingsModal() {
+      var listEl = document.getElementById('settingsLogList');
+      var logs = state.activityLogs || [];
+      listEl.innerHTML = logs.length === 0 ? '<div class="empty-note">기록된 활동 로그가 없습니다.</div>'
+        : logs.map(function(log) { return '<div class="member-meta" style="margin-bottom:6px;">• ' + log + '</div>'; }).join('');
+      document.getElementById('settingsModal').classList.add('show');
+    }
+    function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('show'); }
+    function openImageModal(src) { document.getElementById('modalFullImage').src = src; document.getElementById('imageModal').classList.add('show'); }
+    function closeImageModal() { document.getElementById('imageModal').classList.remove('show'); }
+    function navigateTo(view) {
+      currentView = view;
+      document.getElementById('homeBtn').style.display = view === 'home' ? 'none' : 'inline-block';
+      window.scrollTo(0, 0);
+      render();
+    }
+    function goHome() { navigateTo('home'); }
+
+    function setAttendance(memberId, status) {
+      requireLeader(function() {
+        var target = state.members.find(function(m) { return m.id === memberId; });
+        if (!target) return;
+        target.attendance = status;
+        addLog(target.name + ' ' + (status === 'present' ? '출석' : '결석') + ' 체크');
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function addMember(e) {
+      e.preventDefault();
+      requireLeader(function() {
+        var name = document.getElementById('mName').value.trim();
+        var group = document.getElementById('mGroup').value.trim() || '1순';
+        var birthday = document.getElementById('mBirthday').value.trim() || '01-01';
+        if (!name) return;
+        state.members.push({ id: 'm_' + Date.now(), name: name, group: group, birthday: birthday, attendance: 'present' });
+        addLog('청년 등록: ' + name + ' (' + group + ')');
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function toggleEditMember(memberId) {
+      requireLeader(function() {
+        editingMemberId = editingMemberId === memberId ? null : memberId;
+        render();
+      });
+    }
+
+    function saveMemberEdit(memberId) {
+      requireLeader(function() {
+        var target = state.members.find(function(m) { return m.id === memberId; });
+        if (!target) return;
+        var nameEl = document.getElementById('editMName-' + memberId);
+        var groupEl = document.getElementById('editMGroup-' + memberId);
+        var bdayEl = document.getElementById('editMBday-' + memberId);
+        var name = nameEl ? nameEl.value.trim() : '';
+        if (!name) return alert('이름을 입력하세요.');
+        target.name = name;
+        target.group = (groupEl ? groupEl.value.trim() : '') || '1순';
+        target.birthday = (bdayEl ? bdayEl.value.trim() : '') || '01-01';
+        editingMemberId = null;
+        addLog('청년 정보 수정: ' + target.name + ' (' + target.birthday + ')');
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function deleteMember(memberId) {
+      requireLeader(function() {
+        var target = state.members.find(function(m) { return m.id === memberId; });
+        if (!target) return;
+        if (!confirm(target.name + ' 님을 삭제할까요?')) return;
+        state.members = state.members.filter(function(m) { return m.id !== memberId; });
+        if (editingMemberId === memberId) editingMemberId = null;
+        addLog('청년 삭제: ' + target.name);
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function addJournal(e) {
+      e.preventDefault();
+      requireLeader(function() {
+        var date = document.getElementById('jDate').value || new Date().toISOString().slice(0, 10);
+        var title = document.getElementById('jTitle').value.trim() || '주일 청년부 예배';
+        state.journals.unshift({
+          id: 'j_' + Date.now(), date: date, title: title,
+          leader: document.getElementById('jLeader').value.trim(),
+          prayer: document.getElementById('jPrayer').value.trim(),
+          praise: document.getElementById('jPraise').value.trim(),
+          scripture: document.getElementById('jScripture').value.trim(),
+          sermonTitle: document.getElementById('jSermonTitle').value.trim(),
+          note: document.getElementById('jNote').value.trim()
+        });
+        addLog('예배 일지 작성: ' + title + ' (' + date + ')');
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function toggleEditJournal(journalId) {
+      requireLeader(function() {
+        editingJournalId = editingJournalId === journalId ? null : journalId;
+        render();
+      });
+    }
+
+    function saveJournalEdit(journalId) {
+      requireLeader(function() {
+        var target = state.journals.find(function(j) { return j.id === journalId; });
+        if (!target) return;
+        target.date = document.getElementById('editJDate-' + journalId).value || target.date;
+        target.title = document.getElementById('editJTitle-' + journalId).value.trim() || target.title;
+        target.leader = document.getElementById('editJLeader-' + journalId).value.trim();
+        target.prayer = document.getElementById('editJPrayer-' + journalId).value.trim();
+        target.praise = document.getElementById('editJPraise-' + journalId).value.trim();
+        target.scripture = document.getElementById('editJScripture-' + journalId).value.trim();
+        target.sermonTitle = document.getElementById('editJSermonTitle-' + journalId).value.trim();
+        target.note = document.getElementById('editJNote-' + journalId).value.trim();
+        editingJournalId = null;
+        addLog('예배 일지 수정: ' + target.title);
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function deleteJournal(journalId) {
+      requireLeader(function() {
+        var target = state.journals.find(function(j) { return j.id === journalId; });
+        if (!target) return;
+        if (!confirm('"' + target.title + '" 예배 일지를 삭제할까요?')) return;
+        state.journals = state.journals.filter(function(j) { return j.id !== journalId; });
+        if (editingJournalId === journalId) editingJournalId = null;
+        addLog('예배 일지 삭제: ' + target.title);
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function handleBulletinImageChange(event) {
+      var file = event.target.files[0];
+      if (!file) { pendingBulletinImage = ''; return; }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+          var canvas = document.createElement('canvas');
+          var MAX_WIDTH = 900, width = img.width, height = img.height;
+          if (width > MAX_WIDTH) { height = Math.round((height * MAX_WIDTH) / width); width = MAX_WIDTH; }
+          canvas.width = width; canvas.height = height;
+          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+          pendingBulletinImage = canvas.toDataURL('image/jpeg', 0.72);
+          var previewEl = document.getElementById('bImagePreview');
+          if (previewEl) previewEl.innerHTML = '<img src="' + pendingBulletinImage + '" alt="미리보기" />';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function addBulletin(e) {
+      e.preventDefault();
+      requireLeader(function() {
+        var title = document.getElementById('bTitle').value.trim();
+        var date = document.getElementById('bDate').value || new Date().toISOString().slice(0, 10);
+        var summary = document.getElementById('bSummary').value.trim();
+        if (!title) return;
+        state.bulletins.unshift({ id: 'b_' + Date.now(), title: title, date: date, summary: summary, imageData: pendingBulletinImage || '' });
+        pendingBulletinImage = '';
+        addLog('주보 등록: ' + title);
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function toggleEditBulletin(bulletinId) {
+      requireLeader(function() {
+        editingBulletinId = editingBulletinId === bulletinId ? null : bulletinId;
+        render();
+      });
+    }
+
+    function saveBulletinEdit(bulletinId) {
+      requireLeader(function() {
+        var target = state.bulletins.find(function(b) { return b.id === bulletinId; });
+        if (!target) return;
+        target.title = document.getElementById('editBTitle-' + bulletinId).value.trim() || target.title;
+        target.date = document.getElementById('editBDate-' + bulletinId).value || target.date;
+        target.summary = document.getElementById('editBSummary-' + bulletinId).value.trim();
+        editingBulletinId = null;
+        addLog('주보 수정: ' + target.title);
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function deleteBulletin(bulletinId) {
+      requireLeader(function() {
+        var target = state.bulletins.find(function(b) { return b.id === bulletinId; });
+        if (!target) return;
+        if (!confirm('"' + target.title + '" 주보를 삭제할까요?')) return;
+        state.bulletins = state.bulletins.filter(function(b) { return b.id !== bulletinId; });
+        if (editingBulletinId === bulletinId) editingBulletinId = null;
+        addLog('주보 삭제: ' + target.title);
+        render();
+        pushToCloud(false);
+      });
+    }
+
+    function renderMemberEditPanel(m) {
+      if (editingMemberId !== m.id) return '';
+      return (
+        '<div class="edit-panel">' +
+          '<label class="field-label">이름</label><input id="editMName-' + m.id + '" class="input" value="' + m.name + '" />' +
+          '<div class="grid-2">' +
+            '<div><label class="field-label">순/조</label><input id="editMGroup-' + m.id + '" class="input" value="' + m.group + '" /></div>' +
+            '<div><label class="field-label">생일 (MM-DD)</label><input id="editMBday-' + m.id + '" class="input" value="' + m.birthday + '" /></div>' +
+          '</div>' +
+          '<div class="chip-group" style="justify-content:flex-start;">' +
+            '<button type="button" class="btn btn-primary btn-sm" onclick="saveMemberEdit(\'' + m.id + '\')">저장</button>' +
+            '<button type="button" class="btn btn-soft btn-sm" onclick="toggleEditMember(\'' + m.id + '\')">취소</button>' +
+          '</div>' +
+        '</div>'
+      );
+    }
+
+    function renderHome() {
+      var presentCount = state.members.filter(function(m) { return m.attendance === 'present'; }).length;
+      var totalCount = state.members.length;
+      return (
+        '<section class="home-hero"><h1 class="home-logo handwriting">ON:BIT</h1><div class="home-subtitle">온빛 청년부 임원 다이어리 ✨</div></section>' +
+        '<section class="menu-grid">' +
+          '<button class="menu-tile tile-attendance" onclick="navigateTo(\'attendance\')"><span class="tile-icon">📋</span><span class="tile-title">출석부</span><span class="tile-desc">오늘 출석 ' + presentCount + '/' + totalCount + '명</span></button>' +
+          '<button class="menu-tile tile-birthday" onclick="navigateTo(\'birthday\')"><span class="tile-icon">🎂</span><span class="tile-title">생일파티</span><span class="tile-desc">' + Number(selectedMonth) + '월 생일자 확인</span></button>' +
+          '<button class="menu-tile tile-journal" onclick="navigateTo(\'journal\')"><span class="tile-icon">📖</span><span class="tile-title">예배일지</span><span class="tile-desc">인도·기도·찬양·말씀 기록</span></button>' +
+          '<button class="menu-tile tile-bulletin" onclick="navigateTo(\'bulletin\')"><span class="tile-icon">📰</span><span class="tile-title">주보보관함</span><span class="tile-desc">주보 사진 & 공지 (' + state.bulletins.length + '건)</span></button>' +
+        '</section>'
+      );
+    }
+
+    function renderAttendance() {
+      var presentCount = state.members.filter(function(m) { return m.attendance === 'present'; }).length;
+      var totalCount = state.members.length;
+      var listHtml = state.members.length === 0 ? '<div class="empty-note">등록된 청년이 없습니다.</div>'
+        : state.members.map(function(m) {
+            return (
+              '<div class="member-item" style="flex-direction:column;align-items:stretch;">' +
+                '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
+                  '<div><div class="member-name">' + m.name + ' <span style="font-size:12px;color:var(--accent-lavender);">· ' + m.group + '</span></div><div class="member-meta">생일 ' + m.birthday + '</div></div>' +
+                  '<div class="chip-group">' +
+                    '<button class="btn btn-sm ' + (m.attendance === 'present' ? 'btn-mint' : 'btn-soft') + '" onclick="setAttendance(\'' + m.id + '\',\'present\')">출석</button>' +
+                    '<button class="btn btn-sm ' + (m.attendance === 'absent' ? 'btn-pink' : 'btn-soft') + '" onclick="setAttendance(\'' + m.id + '\',\'absent\')">결석</button>' +
+                    '<button class="btn btn-sm btn-soft" onclick="toggleEditMember(\'' + m.id + '\')">' + (editingMemberId === m.id ? '닫기' : '수정') + '</button>' +
+                    '<button class="btn btn-sm btn-pink" onclick="deleteMember(\'' + m.id + '\')">삭제</button>' +
+                  '</div>' +
+                '</div>' +
+                renderMemberEditPanel(m) +
+              '</div>'
+            );
+          }).join('');
+      return (
+        '<div class="sub-header"><h2 class="sub-title">📋 출석부</h2><span style="font-size:12px;color:var(--text-sub);">' + (isLeader ? '수정 가능' : '조회 모드') + '</span></div>' +
+        '<section class="card"><div class="grid-2"><div class="stat-box"><div class="stat-label">출석 인원</div><div class="stat-value" style="color:#1A7670;">' + presentCount + '명</div></div><div class="stat-box"><div class="stat-label">전체 등록 청년</div><div class="stat-value">' + totalCount + '명</div></div></div></section>' +
+        '<section class="card"><h3 class="card-title">청년 명단 & 출석 체크</h3>' + listHtml + '</section>' +
+        '<section class="card"><h3 class="card-title">새 청년 추가</h3><form onsubmit="addMember(event)"><input id="mName" class="input" placeholder="이름 (예: 홍길동)" required /><div class="grid-2"><input id="mGroup" class="input" placeholder="순/조 (예: 1순)" /><input id="mBirthday" class="input" placeholder="생일 MM-DD (예: 11-28)" /></div><button type="submit" class="btn btn-primary" style="width:100%;">청년 등록하기</button></form></section>'
+      );
+    }
+
+    function renderBirthday() {
+      var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+      var filtered = state.members.filter(function(m) { return (m.birthday || '').indexOf(selectedMonth + '-') === 0; });
+      var options = months.map(function(mm) { return '<option value="' + mm + '"' + (mm === selectedMonth ? ' selected' : '') + '>' + Number(mm) + '월 생일자 보기</option>'; }).join('');
+      var items = filtered.length === 0 ? '<div class="empty-note">' + Number(selectedMonth) + '월 생일자가 아직 없어요.</div>'
+        : filtered.map(function(m) {
+            return (
+              '<div class="member-item" style="flex-direction:column;align-items:stretch;">' +
+                '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
+                  '<div><div class="member-name">🎉 ' + m.name + ' (' + m.group + ')</div><div class="member-meta">생일: ' + m.birthday + '</div></div>' +
+                  '<div class="chip-group">' +
+                    '<button class="btn btn-sm btn-soft" onclick="toggleEditMember(\'' + m.id + '\')">' + (editingMemberId === m.id ? '닫기' : '수정') + '</button>' +
+                    '<button class="btn btn-sm btn-pink" onclick="deleteMember(\'' + m.id + '\')">삭제</button>' +
+                  '</div>' +
+                '</div>' +
+                renderMemberEditPanel(m) +
+              '</div>'
+            );
+          }).join('');
+      return '<div class="sub-header"><h2 class="sub-title">🎂 월별 생일파티</h2></div><section class="card"><label class="field-label">월 선택</label><select class="select" onchange="selectedMonth=this.value;render();">' + options + '</select>' + items + '</section>';
+    }
+
+    function renderJournal() {
+      var today = new Date().toISOString().slice(0, 10);
+      var listHtml = state.journals.length === 0 ? '<div class="empty-note">작성된 예배 일지가 없습니다.</div>'
+        : state.journals.map(function(j) {
+            var isEditing = editingJournalId === j.id;
+            return (
+              '<div class="log-entry">' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">' +
+                  '<strong style="font-size:15px;">' + j.title + '</strong>' +
+                  '<div class="chip-group">' +
+                    '<span class="member-meta" style="align-self:center;">' + j.date + '</span>' +
+                    '<button type="button" class="btn btn-sm btn-soft" onclick="toggleEditJournal(\'' + j.id + '\')">' + (isEditing ? '닫기' : '수정') + '</button>' +
+                    '<button type="button" class="btn btn-sm btn-pink" onclick="deleteJournal(\'' + j.id + '\')">삭제</button>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="journal-grid"><div><span class="journal-tag">인도</span> ' + (j.leader || '-') + '</div><div><span class="journal-tag">기도</span> ' + (j.prayer || '-') + '</div>' +
+                '<div class="journal-item-full"><span class="journal-tag">찬양</span> ' + (j.praise || '-') + '</div><div><span class="journal-tag">말씀</span> ' + (j.scripture || '-') + '</div><div><span class="journal-tag">설교</span> ' + (j.sermonTitle || '-') + '</div></div>' +
+                (j.note ? '<p style="margin:6px 0 0;font-size:13px;line-height:1.55;">' + j.note + '</p>' : '') +
+                (isEditing ? (
+                  '<div class="edit-panel">' +
+                    '<div class="grid-2">' +
+                      '<div><label class="field-label">예배 날짜</label><input id="editJDate-' + j.id + '" class="input" type="date" value="' + j.date + '" /></div>' +
+                      '<div><label class="field-label">예배 구분</label><input id="editJTitle-' + j.id + '" class="input" value="' + j.title + '" /></div>' +
+                    '</div>' +
+                    '<div class="grid-2">' +
+                      '<div><label class="field-label">인도자</label><input id="editJLeader-' + j.id + '" class="input" value="' + (j.leader || '') + '" /></div>' +
+                      '<div><label class="field-label">기도자</label><input id="editJPrayer-' + j.id + '" class="input" value="' + (j.prayer || '') + '" /></div>' +
+                    '</div>' +
+                    '<label class="field-label">찬양 곡목</label><input id="editJPraise-' + j.id + '" class="input" value="' + (j.praise || '') + '" />' +
+                    '<div class="grid-2">' +
+                      '<div><label class="field-label">성경 말씀</label><input id="editJScripture-' + j.id + '" class="input" value="' + (j.scripture || '') + '" /></div>' +
+                      '<div><label class="field-label">설교 제목</label><input id="editJSermonTitle-' + j.id + '" class="input" value="' + (j.sermonTitle || '') + '" /></div>' +
+                    '</div>' +
+                    '<label class="field-label">나눔 및 특이사항</label><textarea id="editJNote-' + j.id + '" class="textarea">' + (j.note || '') + '</textarea>' +
+                    '<div class="chip-group" style="justify-content:flex-start;">' +
+                      '<button type="button" class="btn btn-primary btn-sm" onclick="saveJournalEdit(\'' + j.id + '\')">저장</button>' +
+                      '<button type="button" class="btn btn-soft btn-sm" onclick="toggleEditJournal(\'' + j.id + '\')">취소</button>' +
+                    '</div>' +
+                  '</div>'
+                ) : '') +
+              '</div>'
+            );
+          }).join('');
+      return (
+        '<div class="sub-header"><h2 class="sub-title">📖 예배일지</h2></div>' +
+        '<section class="card"><h3 class="card-title">새 예배 일지 작성</h3><form onsubmit="addJournal(event)">' +
+          '<div class="grid-2"><div><label class="field-label">예배 날짜</label><input id="jDate" class="input" type="date" value="' + today + '" /></div><div><label class="field-label">예배 구분</label><input id="jTitle" class="input" placeholder="예: 주일 청년부 예배" required /></div></div>' +
+          '<div class="grid-2"><div><label class="field-label">인도자</label><input id="jLeader" class="input" placeholder="인도자 이름" /></div><div><label class="field-label">기도자</label><input id="jPrayer" class="input" placeholder="대표기도자 이름" /></div></div>' +
+          '<label class="field-label">찬양 곡목</label><input id="jPraise" class="input" placeholder="예: 주님의 은혜 넘치네" />' +
+          '<div class="grid-2"><div><label class="field-label">성경 말씀 (본문)</label><input id="jScripture" class="input" placeholder="예: 요한복음 8:12" /></div><div><label class="field-label">설교 제목</label><input id="jSermonTitle" class="input" placeholder="설교 제목 입력" /></div></div>' +
+          '<label class="field-label">나눔 및 특이사항</label><textarea id="jNote" class="textarea" placeholder="말씀 요약, 기도제목, 특이사항을 적어주세요."></textarea>' +
+          '<button type="submit" class="btn btn-primary" style="width:100%;">예배 일지 저장하기</button></form></section>' +
+        '<section class="card"><h3 class="card-title">예배 일지 기록 (' + state.journals.length + '건)</h3>' + listHtml + '</section>'
+      );
+    }
+
+    function renderBulletin() {
+      var today = new Date().toISOString().slice(0, 10);
+      var listHtml = state.bulletins.length === 0 ? '<div class="empty-note">저장된 주보가 없습니다.</div>'
+        : state.bulletins.map(function(b) {
+            var isEditing = editingBulletinId === b.id;
+            return (
+              '<div class="log-entry">' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">' +
+                  '<strong style="font-size:15px;">📰 ' + b.title + '</strong>' +
+                  '<div class="chip-group">' +
+                    '<span class="member-meta" style="align-self:center;">' + b.date + '</span>' +
+                    '<button type="button" class="btn btn-sm btn-soft" onclick="toggleEditBulletin(\'' + b.id + '\')">' + (isEditing ? '닫기' : '수정') + '</button>' +
+                    '<button type="button" class="btn btn-sm btn-pink" onclick="deleteBulletin(\'' + b.id + '\')">삭제</button>' +
+                  '</div>' +
+                '</div>' +
+                (b.imageData ? '<img class="bulletin-img" src="' + b.imageData + '" alt="' + b.title + '" onclick="openImageModal(\'' + b.imageData + '\')" />' : '') +
+                '<p style="margin:8px 0 0;font-size:13px;line-height:1.5;">' + (b.summary || '공지 내용 없음') + '</p>' +
+                (isEditing ? (
+                  '<div class="edit-panel">' +
+                    '<label class="field-label">주보 제목</label><input id="editBTitle-' + b.id + '" class="input" value="' + b.title + '" />' +
+                    '<label class="field-label">날짜</label><input id="editBDate-' + b.id + '" class="input" type="date" value="' + b.date + '" />' +
+                    '<label class="field-label">주요 공지 메모</label><textarea id="editBSummary-' + b.id + '" class="textarea">' + (b.summary || '') + '</textarea>' +
+                    '<div class="chip-group" style="justify-content:flex-start;">' +
+                      '<button type="button" class="btn btn-primary btn-sm" onclick="saveBulletinEdit(\'' + b.id + '\')">저장</button>' +
+                      '<button type="button" class="btn btn-soft btn-sm" onclick="toggleEditBulletin(\'' + b.id + '\')">취소</button>' +
+                    '</div>' +
+                  '</div>'
+                ) : '') +
+              '</div>'
+            );
+          }).join('');
+      return (
+        '<div class="sub-header"><h2 class="sub-title">📰 주보보관함</h2></div>' +
+        '<section class="card"><h3 class="card-title">새 주보 등록</h3><form onsubmit="addBulletin(event)">' +
+          '<label class="field-label">주보 제목</label><input id="bTitle" class="input" placeholder="예: 11월 5주차 온빛 주보" required />' +
+          '<label class="field-label">날짜</label><input id="bDate" class="input" type="date" value="' + today + '" />' +
+          '<label class="field-label">주보 이미지 첨부 (선택)</label><input id="bImageFile" class="input" type="file" accept="image/*" onchange="handleBulletinImageChange(event)" /><div id="bImagePreview" class="preview-box"></div>' +
+          '<label class="field-label">주요 공지 메모</label><textarea id="bSummary" class="textarea" placeholder="주요 공지, 행사 일정, 안내 메모를 적어주세요."></textarea>' +
+          '<button type="submit" class="btn btn-primary" style="width:100%;">주보 보관함에 저장</button></form></section>' +
+        '<section class="card"><h3 class="card-title">주보 보관함 (' + state.bulletins.length + '건)</h3>' + listHtml + '</section>'
+      );
+    }
+
+    function render() {
+      var container = document.getElementById('viewContainer');
+      if (currentView === 'home') container.innerHTML = renderHome();
+      else if (currentView === 'attendance') container.innerHTML = renderAttendance();
+      else if (currentView === 'birthday') container.innerHTML = renderBirthday();
+      else if (currentView === 'journal') container.innerHTML = renderJournal();
+      else container.innerHTML = renderBulletin();
+    }
+
+    updateLeaderButton();
+    render();
+    pullFromCloud();
+  </script>
+</body>
+</html>
